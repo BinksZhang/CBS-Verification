@@ -13,28 +13,28 @@ First, code a function with the modelling language to represent an actual CBS da
 
 ```Coq
 Definition Copy_blk : val := 
-	Fun bk :=
-		Let ln := bget bk in			(* read the content of a block *)
-			bcreate ln.							(* create a block *)
+  Fun bk :=
+    Let ln := bget bk in    (* read the content of a block *)
+      bcreate ln.           (* create a block *)
 ```
 
 Second, specify the invocation of this function by a triple. This triple captures the system properties before and after the function invocation.
 
 ```Coq
 Lemma triple_Copy_blk : forall (Hf:hfprop) (bp:bloc) (ln:listint),
-	triple (Copy_blk bp)
- 	 	(\R[Hf, bp~b~>ln])
-		(fun r => \exists bp', [r=bp'] \* \R[Hf,((bp'~b~>ln) \b* (bp~b~>ln))]).
+  triple (Copy_blk bp)
+    (\R[Hf, bp~b~>ln])
+    (fun r => \exists bp', [r=bp'] \* \R[Hf,((bp'~b~>ln) \b* (bp~b~>ln))]).
 ```
 
 Last, reason and prove such a triple using the proven reasoning rules. If this triple can be proved, it is sound since the reasoning rules are all sound. 
 
 ```Coq
 Proof.
-  intros. applys* triple_app_fun.			  (* reason about invoking a funcation *)
-  applys triple_let triple_bget. ext.		  (* reason about reading a block *)
+  intros. applys* triple_app_fun.             (* reason about invoking a funcation *)
+  applys triple_let triple_bget. ext.         (* reason about reading a block *)
   applys triple_conseq_frame triple_bcreate.  (* reason about creating a new block *)
-  rewrite* hstar_hempty_l'.					  (* rewrite the format and complete proof *)
+  rewrite* hstar_hempty_l'.                   (* rewrite the format and complete proof *)
   introv M. rewrite hstar_hexists in M.
   destruct M as (bp'&M). rewrite hstar_assoc, hstar_sep, hfstar_hempty_l in M.
   exists~ bp'.
