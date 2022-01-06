@@ -73,5 +73,5 @@ To install the latest development version of our tool, use this:
 
 Then, you can load an example proof. There are several examples in the file Example.v. Just use the CoqIDE to open that file and check the proof. The success proof of a program will be as follows.
 
-<img src="Move.png" alt="avatar" style="zoom:50%;" />
+<img src="Move.png" alt="avatar" style="zoom:30%;" />
 
