@@ -1,0 +1,121 @@
+DIGEST 92949686024ec7e4fdbf549b647c34b9
+FSLF.TLC.LibSum
+R363:372 SLF.TLC.LibTactics <> <> lib
+R374:381 SLF.TLC.LibLogic <> <> lib
+R383:389 SLF.TLC.LibBool <> <> lib
+R1069:1071 Coq.Init.Datatypes <> inl constr
+R1069:1071 Coq.Init.Datatypes <> inl constr
+R1092:1094 Coq.Init.Datatypes <> inr constr
+R1092:1094 Coq.Init.Datatypes <> inr constr
+inst 1285:1295 <> sum_inhab_l
+R1308:1312 SLF.TLC.LibLogic <> Inhab class
+R1320:1324 SLF.TLC.LibLogic <> Inhab class
+R1328:1330 Coq.Init.Datatypes <> :type_scope:x_'+'_x not
+R1327:1327 SLF.TLC.LibSum <> A var
+R1331:1331 SLF.TLC.LibSum <> B var
+R1363:1374 SLF.TLC.LibLogic <> Inhab_of_val thm
+R1377:1379 Coq.Init.Datatypes <> inl constr
+R1381:1389 SLF.TLC.LibLogic <> arbitrary def
+R1363:1374 SLF.TLC.LibLogic <> Inhab_of_val thm
+R1377:1379 Coq.Init.Datatypes <> inl constr
+R1381:1389 SLF.TLC.LibLogic <> arbitrary def
+inst 1409:1419 <> sum_inhab_r
+R1432:1436 SLF.TLC.LibLogic <> Inhab class
+R1444:1448 SLF.TLC.LibLogic <> Inhab class
+R1452:1454 Coq.Init.Datatypes <> :type_scope:x_'+'_x not
+R1451:1451 SLF.TLC.LibSum <> A var
+R1455:1455 SLF.TLC.LibSum <> B var
+R1487:1498 SLF.TLC.LibLogic <> Inhab_of_val thm
+R1501:1503 Coq.Init.Datatypes <> inr constr
+R1505:1513 SLF.TLC.LibLogic <> arbitrary def
+R1487:1498 SLF.TLC.LibLogic <> Inhab_of_val thm
+R1501:1503 Coq.Init.Datatypes <> inr constr
+R1505:1513 SLF.TLC.LibLogic <> arbitrary def
+def 1535:1543 <> Inhab_sum
+R1556:1560 SLF.TLC.LibLogic <> Inhab class
+R1565:1569 SLF.TLC.LibLogic <> Inhab class
+R1575:1579 SLF.TLC.LibLogic <> Inhab class
+R1583:1585 Coq.Init.Datatypes <> :type_scope:x_'+'_x not
+R1582:1582 SLF.TLC.LibSum <> A var
+R1586:1586 SLF.TLC.LibSum <> B var
+def 1992:1997 <> is_inl
+R2018:2020 Coq.Init.Datatypes <> :type_scope:x_'+'_x not
+R2017:2017 SLF.TLC.LibSum <> A var
+R2021:2021 SLF.TLC.LibSum <> B var
+R2026:2029 Coq.Init.Datatypes <> bool ind
+R2042:2042 SLF.TLC.LibSum <> x var
+R2053:2055 Coq.Init.Datatypes <> inl constr
+R2062:2065 Coq.Init.Datatypes <> true constr
+R2071:2073 Coq.Init.Datatypes <> inr constr
+R2080:2084 Coq.Init.Datatypes <> false constr
+def 2105:2110 <> is_inr
+R2131:2133 Coq.Init.Datatypes <> :type_scope:x_'+'_x not
+R2130:2130 SLF.TLC.LibSum <> A var
+R2134:2134 SLF.TLC.LibSum <> B var
+R2139:2142 Coq.Init.Datatypes <> bool ind
+R2155:2155 SLF.TLC.LibSum <> x var
+R2166:2168 Coq.Init.Datatypes <> inl constr
+R2175:2179 Coq.Init.Datatypes <> false constr
+R2185:2187 Coq.Init.Datatypes <> inr constr
+R2194:2197 Coq.Init.Datatypes <> true constr
+sec 2215:2218 <> IsIn
+var 2232:2232 IsIn A
+var 2234:2234 IsIn B
+R2264:2266 Coq.Init.Datatypes <> :type_scope:x_'+'_x not
+R2263:2263 SLF.TLC.LibSum <> IsIn.A var
+R2267:2267 SLF.TLC.LibSum <> IsIn.B var
+prf 2277:2293 <> is_inl_neg_is_inr
+R2317:2319 Coq.Init.Logic <> :type_scope:x_'='_x not
+R2309:2314 SLF.TLC.LibSum <> is_inl def
+R2316:2316 SLF.TLC.LibSum <> x var
+R2320:2322 SLF.TLC.LibBool <> :Bool_scope:'!'_x not
+R2331:2331 SLF.TLC.LibBool <> :Bool_scope:'!'_x not
+R2323:2328 SLF.TLC.LibSum <> is_inr def
+R2330:2330 SLF.TLC.LibSum <> x var
+prf 2382:2398 <> is_inr_neg_is_inl
+R2422:2424 Coq.Init.Logic <> :type_scope:x_'='_x not
+R2414:2419 SLF.TLC.LibSum <> is_inr def
+R2421:2421 SLF.TLC.LibSum <> x var
+R2425:2427 SLF.TLC.LibBool <> :Bool_scope:'!'_x not
+R2436:2436 SLF.TLC.LibBool <> :Bool_scope:'!'_x not
+R2428:2433 SLF.TLC.LibSum <> is_inl def
+R2435:2435 SLF.TLC.LibSum <> x var
+R2485:2488 SLF.TLC.LibSum IsIn <> sec
+sec 2669:2671 <> Get
+R2688:2692 SLF.TLC.LibLogic <> Inhab class
+R2704:2708 SLF.TLC.LibLogic <> Inhab class
+R2736:2736 Coq.Init.Datatypes <> :type_scope:x_'+'_x not
+R2734:2735 SLF.TLC.LibSum <> Get.A1 var
+R2737:2738 SLF.TLC.LibSum <> Get.A2 var
+def 2753:2757 <> get21
+R2772:2772 SLF.TLC.LibSum <> x var
+R2783:2785 Coq.Init.Datatypes <> inl constr
+R2800:2802 Coq.Init.Datatypes <> inr constr
+R2810:2818 SLF.TLC.LibLogic <> arbitrary def
+def 2839:2843 <> get22
+R2858:2858 SLF.TLC.LibSum <> x var
+R2869:2871 Coq.Init.Datatypes <> inl constr
+R2879:2887 SLF.TLC.LibLogic <> arbitrary def
+R2893:2895 Coq.Init.Datatypes <> inr constr
+R2918:2920 SLF.TLC.LibSum Get <> sec
+sec 3106:3109 <> Fget
+R3146:3150 SLF.TLC.LibLogic <> Inhab class
+R3162:3166 SLF.TLC.LibLogic <> Inhab class
+R3197:3198 Coq.Init.Logic <> :type_scope:x_'->'_x not
+R3201:3201 Coq.Init.Datatypes <> :type_scope:x_'+'_x not
+R3199:3200 SLF.TLC.LibSum <> Fget.B1 var
+R3202:3203 SLF.TLC.LibSum <> Fget.B2 var
+R3194:3194 Coq.Init.Datatypes <> :type_scope:x_'+'_x not
+R3192:3193 SLF.TLC.LibSum <> Fget.A1 var
+R3195:3196 SLF.TLC.LibSum <> Fget.A2 var
+def 3218:3226 <> fun_get21
+R3244:3248 SLF.TLC.LibSum <> get21 def
+R3251:3251 SLF.TLC.LibSum <> f var
+R3254:3256 Coq.Init.Datatypes <> inl constr
+R3258:3258 SLF.TLC.LibSum <> x var
+def 3274:3282 <> fun_get22
+R3300:3304 SLF.TLC.LibSum <> get22 def
+R3307:3307 SLF.TLC.LibSum <> f var
+R3310:3312 Coq.Init.Datatypes <> inr constr
+R3314:3314 SLF.TLC.LibSum <> x var
+R3324:3327 SLF.TLC.LibSum Fget <> sec
