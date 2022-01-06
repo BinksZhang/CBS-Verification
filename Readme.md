@@ -1,4 +1,4 @@
-## Formal Verification for Cloud Block Storage in Coq
+# Formal Verification for Cloud Block Storage in Coq
 
 To rigorously discuss the reliability of cloud block storage (CBS), we develop a proof system and implement a verification tool for reasoning about the correctness of CBS basic data operations. The proof system has separation logic features, and the tool simplifies derivation while retaining mathematical rigour.
 
@@ -7,7 +7,7 @@ This proof system consists of the modelling language, heap predicates, triples, 
 
 We implement this proof system as a verification tool in Coq. Our tool can encode actual operations intuitively and verify specifications semi-automatically. The notations and type conversions in our tool improve the readability of the representation code. The automated proof scripts simplify the verifying process and skip the unnecessary details. We also represent and verify some basic CBS data operations to thus analyse their mathematical correctness.
 
-### How We Reason about CBS Programs
+## How We Reason about CBS Programs
 
 First, code a function with the modelling language to represent an actual CBS data operation.
 
@@ -41,7 +41,7 @@ Proof.
 Qed.
 ```
 
-### Overview of Implementation
+## Overview of Implementation
 
 The Implementation of our proof system mainly consists the following parts:.
 
@@ -69,7 +69,7 @@ To install the latest development version of our tool, use this:
 
 **Note** : No Chinese is allowed in the file path!
 
-### Replaying a sample proof
+## Replaying a sample proof
 
 Then, you can load an example proof. There are several examples in the file Example.v. Just use the CoqIDE to open that file and check the proof. The success proof of a program will be as follows.
 
