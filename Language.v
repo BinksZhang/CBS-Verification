@@ -1,10 +1,10 @@
 (**
 
-This file describes the representation of modeling language.
+This file describes the representation of modelling language.
 
 Author: Bowen Zhang.
 
-Date : 2021.07.24
+Date : 2022.01.06
 *)
 
 From SLF (* TLC *) Require Export LibCore.

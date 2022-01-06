@@ -9,11 +9,11 @@ This file describes the statements and proof of reasoning rules, mainly about:
     a. primitive operations (block & file)
     b. terms
     c. structural rules
-    (we first state rules by Hoare triple, then prove the SL rules by Hoare rules ).
+    (we first state rules by Hoare triple, then prove the SL rules using Hoare rules ).
 
 Author: Bowen Zhang.
 
-Date : 2021.07.24
+Date : 2022.01.06
 *)
 
 From SLF (* TLC *) Require Export LibCore TLCbuffer.
@@ -1229,9 +1229,6 @@ Proof.
 Qed.
 
 (*================== semantic and basic eval for while ===========================*)
-
-(** Assume a construct [while t1 do t2], written [trm_while t1 t2] in the
-    grammar of terms. *)
 
 Notation "'While' t1 'Do' t2 'Done'" :=
   (trm_while t1 t2)

@@ -2,8 +2,9 @@
 
 This file describes the representation of variables.
 
-Author: Arthur Charguéraud.
-License: CC-by 4.0.
+Author: Bowen Zhang.
+
+Date : 2022.01.06.
 
 *)
 
@@ -16,15 +17,6 @@ Generalizable Variables A.
 (* ********************************************************************** *)
 (* ################################################################# *)
 (* * Variables *)
-
-(** A variable is represented as a string.
-
-    The boolean function [var_eq x y] compares two variables.
-
-    The tactic [case_var] performs case analysis on expressions of the form
-    [if var_eq x y then .. else ..] that appear in the goal.
-
-*)
 
 (* ----------------------------------------------------------------------
 
@@ -48,9 +40,6 @@ Proof using.
 Qed.
 
 Global Opaque var.
-
-(** Tactic [var_neq] for proving two concrete variables distinct.
-    Also registered as hint for [auto] *)
 
 Ltac var_neq :=
   match goal with |- ?x <> ?y :> var =>
@@ -129,9 +118,6 @@ Qed.
 (* ================================================================= *)
 (* ** List of n fresh variables *)
 
-(** [var_funs xs n] asserts that [xs] consists of [n] distinct variables,
-    for [n > 0]. *)
-
 Definition var_funs (xs:vars) (n:nat) : Prop :=
      var_distinct xs
   /\ length xs = n
@@ -158,11 +144,6 @@ Qed.
 (* ---------------------------------------------------------------------- *)
 (* ================================================================= *)
 (* ** Generation of n variables *)
-
-(** [nat_to_var n] converts [nat] values into distinct
-    [name] values.
-    Warning: the current implementation is inefficient. *)
-
 Definition dummy_char := Ascii.ascii_of_nat 0%nat.
 
 Fixpoint nat_to_var (n:nat) : var :=
@@ -178,17 +159,11 @@ Proof using.
   { inverts E. fequals~. }
 Qed.
 
-(** [var_seq i n] generates a list of variables [x1;x2;..;xn]
-    with [x1=i] and [xn=i+n-1]. Such lists are useful for
-    generic programming. *)
-
 Fixpoint var_seq (start:nat) (nb:nat) : vars :=
   match nb with
   | O => nil
   | S nb' => (nat_to_var start) :: var_seq (S start) nb'
   end.
-
-(** Properties of [var_seq] follow *)
 
 Section Var_seq.
 Implicit Types start nb : nat.
@@ -247,10 +222,6 @@ End Var_seq.
 (* ********************************************************************** *)
 (* ################################################################# *)
 (* * Notation for program variables *)
-
-(** To avoid using the string notation ["x"] for refering to a
-    variable called [x], one can use the notation ['x], available
-    by importing the following module. *)
 
 Module NotationForVariables.
 
@@ -379,5 +350,3 @@ Notation "''F'" := ("F":var) : var_scope.
 Open Scope var_scope.
 
 End NotationForVariables.
-
-(* 2020-03-09 15:04:15 (UTC+01) *)

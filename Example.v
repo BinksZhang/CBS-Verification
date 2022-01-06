@@ -16,7 +16,7 @@ Notice: readers should read Language.v first.
 
 Author: Bowen Zhang.
 
-Date : 2021.07.24
+Date : 2022.01.06
 *)
 
 From SLF (* TLC *) Require Export LibCore TLCbuffer.
@@ -132,15 +132,6 @@ Definition Copy_blk : val :=
     Let 'ln := 'bget 'bk in
     'bcreate 'ln.
 
-	(* Set Printing Coercions.
-	Print Copy_blk.
-	Unset Printing Coercions. *)
-
-(* 
-Parameter himpl_hexists2 : forall Hf bp l r,
-\exists bp0 : bloc,\[r = bp0] \* (\R[ \f[], bp0 ~b~> l]) \*
-(\R[ Hf, bp ~b~> l]) ==>
-\exists bp' : bloc,\[r = bp'] \* (\R[ Hf, bp' ~b~> l \b* bp ~b~> l]) *)
 
 Lemma triple_Copy_blk : forall Hf (bp:bloc) (l:listint),
   triple (Copy_blk bp)
@@ -518,7 +509,6 @@ Proof. apply prop_eq_True. discriminate. Qed.
 Fact le_0_2: (0%nat <= 2%nat) = True.
 Proof. apply prop_eq_True. discriminate. Qed.
 
-(* 小于需要用反证法,因为 1<=2 的计算结果是 A=B -> False, A=B为矛盾 *)
 Lemma le_1_2: ((2%nat - 1%nat) <= 2%nat) = True.
 Proof. apply prop_eq_True. discriminate. Qed.
 
