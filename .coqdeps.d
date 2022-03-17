@@ -68,5 +68,7 @@ Himpl.vo Himpl.glob Himpl.v.beautified: Himpl.v TLC/LibCore.vo TLC/TLCbuffer.vo 
 Himpl.vio: Himpl.v TLC/LibCore.vio TLC/TLCbuffer.vio Language.vio InnerPre.vio
 Rules.vo Rules.glob Rules.v.beautified: Rules.v TLC/LibCore.vo TLC/TLCbuffer.vo Himpl.vo
 Rules.vio: Rules.v TLC/LibCore.vio TLC/TLCbuffer.vio Himpl.vio
-Example.vo Example.glob Example.v.beautified: Example.v TLC/LibCore.vo TLC/TLCbuffer.vo Rules.vo
-Example.vio: Example.v TLC/LibCore.vio TLC/TLCbuffer.vio Rules.vio
+ExBasic.vo ExBasic.glob ExBasic.v.beautified: ExBasic.v TLC/LibCore.vo TLC/TLCbuffer.vo Rules.vo
+ExBasic.vio: ExBasic.v TLC/LibCore.vio TLC/TLCbuffer.vio Rules.vio
+Example.vo Example.glob Example.v.beautified: Example.v TLC/LibCore.vo TLC/TLCbuffer.vo Rules.vo ExBasic.vo
+Example.vio: Example.v TLC/LibCore.vio TLC/TLCbuffer.vio Rules.vio ExBasic.vio

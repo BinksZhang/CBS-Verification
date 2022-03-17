@@ -1,15 +1,16 @@
 # Formal Verification for Cloud Block Storage in Coq
 
-To rigorously discuss the reliability of cloud block storage (CBS), we develop a proof system and implement a verification tool for reasoning about the correctness of CBS basic data operations. The proof system has separation logic features, and the tool simplifies derivation while retaining mathematical rigour.
+To rigorously discuss the reliability of cloud block storage (CBS), we develop a proof system and implement a verification tool for reasoning about the correctness of CBS data operations. The proof system has separation logic features, and the tool simplifies derivation while retaining mathematical rigor.
 
-This proof system consists of the modelling language, heap predicates, triples, and reasoning rules. The modelling language represents CBS state and data operations, and the heap predicates describe the properties of a given CBS state. Besides, the triples specify the behaviour of a program, and the reasoning rules supports verifying these triples.
+This proof system consists of the modeling language, heap predicates, triples, and reasoning rules. The modeling language represents CBS state and data operations, and the heap predicates describe the properties of a given CBS state. Besides, the triples specify the behavior of a program, and the reasoning rules supports verifying these triples.
 
+We implement this proof system as a verification tool in Coq. Our tool can encode actual operations intuitively and verify specifications semi-automatically. The notations and type conversions in our tool improve the readability of the representation code. The automated proof scripts simplify the verifying process and skip the unnecessary details. 
 
-We implement this proof system as a verification tool in Coq. Our tool can encode actual operations intuitively and verify specifications semi-automatically. The notations and type conversions in our tool improve the readability of the representation code. The automated proof scripts simplify the verifying process and skip the unnecessary details. We also represent and verify some basic CBS data operations to thus analyse their mathematical correctness.
+In particular, the data modifications in CBS are more likely to cause logical storage errors, such as null reference or block loss. Therefore, in addition to the basic operations, we represent and verify the CBS data modifications to thus analyze their mathematical correctness.
 
 ## How We Reason about CBS Programs
 
-First, code a function with the modelling language to represent an actual CBS data operation.
+First, code a function with the modeling language to represent an actual CBS data operation.
 
 ```Coq
 Definition Copy_blk : val := 
@@ -45,15 +46,16 @@ Qed.
 
 The Implementation of our proof system mainly consists the following parts:.
 
-- Modelling Language  ——  Language.v
+- Modeling Language  ——  Language.v
 - Assertion Language  ——  CBS heap predicates (Himpl.v) + Internal heap predicates (InnerPre.v) 
 - Specification Language  ——  Rules.v
-- Verification Examples  ——  Example.v
+- Verification of Basic Operations  ——  ExBasic.v
+- Verification of Data Modifications ——  Example.v
 - Variable Notations —— Var.v 
 
 In additions, our tool depends on a Coq standard library (TLC.v) and a definition of finite map (Fmap.v).
 
-The implementation of the verification tool amount to 4554 non-blank lines of Coq script. It includes 80 definitions, 313 lemmas, and 8 examples.
+The implementation of the verification tool amount to 4601 non-blank lines of Coq script. It includes 80 definitions, 313 lemmas, and the verifications of 8 scenarios.
 
 ## Installation
 
