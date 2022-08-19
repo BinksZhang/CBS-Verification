@@ -529,6 +529,24 @@ Proof.
   exists~ bp'.
 Qed.
 
+Lemma himpl_hexists_append : forall f p1 p2 n1 n2 n3 n4 n5,
+(fun x : val => \exists bp : bloc,
+  \R[ f ~f~> (p1 :: nil) & p2 & bp, bp ~b~> (n5 :: nil)] \*
+ (\R[ \f[], p1 ~b~> (n1 :: n2 :: nil) \b* p2 ~b~> (n3 :: n4 :: nil)])) ===>
+(fun x : val => \exists bp2 bp3 : bloc,
+  \R[ f ~f~> (p1 :: bp2 :: bp3 :: nil),
+      p1 ~b~> (n1 :: n2 :: nil) \b* bp2 ~b~> (n3 :: n4 :: nil) \b*
+      bp3 ~b~> (n5 :: nil)]).
+Proof. 
+  intros. intros r.
+  intros h T. apply hexists_inv in T.
+  destruct T as (p3&T).
+  exists p2 p3.
+  assert ( (p1::nil)&p2&p3 = (p1::p2::p3::nil) ) as H. { rew_list*. }
+  rewrite hstar_sep,hfstar_hempty_r, hbstar_comm, hbstar_assoc, H in T.
+  apply T.
+Qed.  
+
 Lemma himpl_noduplicate2 : forall bp1 bp2 l1 l2,
 \R[ \f[], bp1 ~b~> l1 \b* bp2 ~b~> l2] ==>
 \R[ \f[noduplicates (bp1 :: bp2 :: nil)], bp1 ~b~> l1 \b* bp2 ~b~> l2].

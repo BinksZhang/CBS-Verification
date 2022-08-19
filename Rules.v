@@ -830,6 +830,39 @@ Proof.
 Qed.
 
 
+Lemma triple_list_hd : forall H l1,
+  triple (val_list_hd (val_listint l1)) H
+    (fun r => (\[r = val_listint (take 2%nat l1)] \* H)).
+Proof.
+  intros. unfold triple. intros Hf Hb sf sb M.
+  exists sf sb (val_listint (take 2%nat l1)).
+  splits~. apply eval_list_hd.
+  rewrite hstar_assoc.
+  apply* hstar_hpure_iff.
+Qed.
+
+Lemma triple_list_tl : forall H l1,
+  triple (val_list_tl (val_listint l1)) H
+    (fun r => (\[r = val_listint (drop 2%nat l1)] \* H)).
+Proof.
+  intros. unfold triple. intros Hf Hb sf sb M.
+  exists sf sb (val_listint (drop 2%nat l1)).
+  splits~. apply eval_list_tl.
+  rewrite hstar_assoc.
+  apply* hstar_hpure_iff.
+Qed.
+
+Lemma triple_list_len : forall H l1,
+  triple (val_list_len (val_listint l1)) H
+    (fun r => (\[r = (LibList.length l1)] \* H)).
+Proof.
+  intros. unfold triple. intros Hf Hb sf sb M.
+  exists sf sb (LibList.length l1).
+  splits~. apply eval_list_len.
+  rewrite hstar_assoc.
+  apply* hstar_hpure_iff.
+Qed.
+
 (* ----------------  SL rule: terms   --------------- *)
 Lemma triple_val : forall v H Q,
   H ==> Q v ->

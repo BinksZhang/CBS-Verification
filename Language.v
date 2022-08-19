@@ -53,6 +53,9 @@ Inductive prim : Type :=
   | val_min : prim       (*a - b*)
   | val_le : prim       (*a <= b*)
   | val_list_rev : prim    (*reverse a list*)
+  | val_list_hd  : prim    (*extract list for a block*)
+  | val_list_len : prim   (*get the length of content*)
+  | val_list_tl  : prim    (*after extraction*)
   | val_list_app : prim    (*append a list*)
   | val_list_cut : prim.   (*truncate a list*)
 
@@ -180,6 +183,14 @@ Inductive eval : heap -> trm -> heap -> val -> Prop :=
       eval s (val_eq n1 n2) s (val_bool (n1 =? n2))
   | eval_list_rev : forall s l1,
       eval s (val_list_rev (val_listint l1)) s (val_listint (rev l1))
+  
+  | eval_list_hd : forall s l1,
+      eval s (val_list_hd (val_listint l1)) s (val_listint (LibList.take 2%nat l1))
+  | eval_list_tl : forall s l1,
+      eval s (val_list_tl (val_listint l1)) s (val_listint (LibList.drop 2%nat l1))
+  | eval_list_len : forall s l1,
+      eval s (val_list_len (val_listint l1)) s (LibList.length l1)  
+
   | eval_list_app : forall s l1 l2,
       eval s (val_list_app (val_listint l1) (val_listint l2)) 
            s (val_listint (l1 ++ l2))
@@ -668,6 +679,18 @@ Notation "l1 '++ l2" :=
 
 Notation "'rev l1" :=
   (val_list_rev l1)
+  (at level 67) : trm_scope.
+
+Notation "'hd l1" :=
+  (val_list_hd l1)
+  (at level 67) : trm_scope.
+
+Notation "'tl l1" :=
+  (val_list_tl l1)
+  (at level 67) : trm_scope.
+
+Notation "'len l1" :=
+  (val_list_len l1)
   (at level 67) : trm_scope.
 
 Notation "'()" := val_unit : trm_scope.

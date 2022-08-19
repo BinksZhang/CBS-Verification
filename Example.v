@@ -57,7 +57,7 @@ Proof.
   exists bp'. splits~.
 Qed.
 
-(*=================== Append =========================*)
+(*=================== Append a block =========================*)
 
 Definition Append_blk :=
   Fun 'f 'l :=
@@ -104,6 +104,57 @@ Proof.
   rew_list in H.
   exists bp. rewrite~ hbstar_comm.
 Qed.
+
+(*=================== Append contents =========================*)
+Definition Append : val :=
+  Fix 'F 'f 'l :=
+    Let 'm := 'len 'l in
+    Let 'be := ('m '<= 2) in
+    If_ 'be
+    Then 
+      Append_blk 'f 'l
+    Else
+      Let 'l1 := 'hd 'l in
+      Let 'l2 := 'tl 'l in
+      Let 'r := Append_blk 'f 'l1 in
+        'F 'f 'l2.
+
+Lemma triple_Append: forall (p1:bloc) (n1 n2 n3 n4 n5:int) (f:floc) ,
+  triple (Append f (val_listint (n3::n4::n5::nil)))
+    (\R[ f ~f~> (p1::nil), p1 ~b~> (n1::n2::nil) ])
+    (fun _ => \exists bp2 bp3, 
+      \R[f ~f~> (p1::bp2::bp3::nil), 
+         (p1 ~b~> (n1::n2::nil)) \b* (bp2 ~b~> (n3::n4::nil)) \b* (bp3 ~b~> (n5::nil))]).
+Proof.
+  intros. applys* triple_app_fix2. simpl.
+  applys triple_let triple_list_len.
+  ext. applys triple_let triple_le. ext.
+  applys triple_if. case_if*. destruct C. auto.
+  applys triple_let triple_list_hd. ext.
+  applys triple_let triple_list_tl. ext.
+  applys triple_let.
+  applys triple_conseq_frame triple_Append_blk.
+  rewrite hstar_sep. rewrite hfstar_hempty_r, hbstar_hempty_l.
+  apply himpl_refl. intros r. simpl.
+  apply himpl_refl.
+  
+  intros r.
+  rewrite hstar_hexists.
+  applys triple_hexists. intros p2.
+  rewrite hstar_sep, hfstar_hempty_r, hbstar_comm.
+  applys* triple_app_fix2. simpl.
+  applys triple_let triple_list_len. ext.
+  applys triple_let triple_le. ext.
+  applys triple_if. case_if*.
+  2: { destruct C0. rew_list. discriminate. }
+  applys triple_conseq_frame triple_Append_blk.
+  rewrite hstar_sep, hfstar_hempty_r, hbstar_hempty_l. apply himpl_refl.
+  rewrite hstar_hexists. apply himpl_hexists_append.
+Qed.
+
+
+
+
 
 
 (*-------Some auto proof script for reasoning about truncate-------*)
