@@ -85,7 +85,7 @@ To install the latest development version of our tool, use this:
 
 **Note** : <font color=red>No Chinese is allowed in the file path!</font>
 
-## Replaying a sample proof
+## Replaying a Sample Proof
 
 Then, you can load an example proof. There are several examples in the files ExBasic.v, ExModification.v, and ExMapReduce.v. Just use the CoqIDE to open a file and check the corresponding proof. The success proof of a program will be as follows.
 
