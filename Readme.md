@@ -13,7 +13,7 @@ First, code a function with the modeling language to represent an actual CBS dat
 ```Coq
 Definition CopyBlk : val := 
   Fun 'f 'n := 
-  	Let 'b := 'nthblk 'f 'n in     (* get the target block's loction *)
+    Let 'b := 'nthblk 'f 'n in     (* get the target block's loction *)
     Let 'ln := 'bget 'b in         (* get the block's contents *)
       'bcreate 'ln                 (* create a new block *)
 ```
