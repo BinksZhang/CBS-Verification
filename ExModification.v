@@ -15,7 +15,7 @@ Date : 2022.03.21
 *)
 
 From SLF (* TLC *) Require Export LibCore TLCbuffer.
-From SLF (* Sep *) Require Export Rules ExBasic.
+From SLF (* Sep *) Require Export TripleAndRules ExBasic.
 
 (* ###########################  Examples #################################*)
 
@@ -27,57 +27,39 @@ Open Scope val_scope.
 Open Scope trm_scope.
 Open Scope Z_scope.
 
-(*========================= Move a block ================================*)
-Definition Move_blk :=
-  Fun 'f 'i :=
-    Let 'bk := 'nth_blk 'f 'i in
-    Let 'bk1 := Copy_blk 'bk in
-    'set_nth_blk 'f 'i 'As 'bk1 ';
-    'bdelete 'bk.
 
-Lemma triple_Move_blk : forall (fp:floc) (bp:bloc) (lb:list bloc) (ln:list int) (n:int),
-  bp = (nth_default bnull (Z.to_nat n) lb) ->
-  triple (Move_blk fp n)
-    (\R[ fp ~f~> lb, bp ~b~> ln ])
-    (fun _ => \exists bp',
-              (\R[( fp ~f~> (LibList.update (to_nat n) bp' lb)),(bp' ~b~> ln)])).
+(* Lemma nodup_after_shuffle : forall lwd,
+  noduplicates (wordshuffle lwd).
 Proof.
-  introv ->.
-  applys* triple_app_fun2. simpls.
-  applys triple_let triple_fget_nth_blk. ext.
-  applys triple_let triple_Copy_blk.
-  ext. intros bp'. ext.
-  applys triple_seq.
-  apply triple_fset_nth_blk.
-  applys triple_conseq_frame triple_bdelete.
-  rewrite hstar_sep, hfstar_hempty_r, hbstar_comm.
-  applys himpl_refl.
-  intros r. rewrite hstar_sep, hfstar_hempty_r, hbstar_hempty_l.
-  intros h (MA&MB).
-  exists bp'. splits~.
-Qed.
+  intros. unfolds wordshuffle.
+  induction lwd.
+  unfold shuffle. simpl. apply noduplicates_nil.
+  unfold shuffle in IHlwd. unfold shuffle. simpl.
+  case_if*.
+  2: { simpl. destruct C. unfold eqword. auto. }
+  unfold remove,remove_duplicates,classify.
+  simpl. *)
 
 (*=================== Append a block =========================*)
 
-Definition Append_blk :=
+Definition Append_a_blk :=
   Fun 'f 'l :=
     Let 'bk := 'bcreate 'l in
-    Let 'lb := 'fbuffer 'bk in
+    Let 'lb := 'buffer 'bk in
     'fatt 'f 'lb.
 
 (* a smallfoot specification that only describes *)
-Lemma triple_Append_blk: forall lb ln (f:floc) ,
-  triple (Append_blk f (val_listint ln))
+Lemma triple_Append_a_blk: forall lb ln (f:floc) ,
+  triple (Append_a_blk f (val_listint ln))
     (\R[f ~f~> lb, \b[]])
     (fun _ => \exists bp, \R[f ~f~> (lb++(bp::nil)), bp ~b~> ln]).
 Proof.
   intros. applys* triple_app_fun2. simpl.
   applys triple_let triple_bcreate. ext. intros bp1. ext.
-  applys triple_let triple_fbuffer. ext.
+  applys triple_let triple_new_buffer. ext.
   applys triple_conseq_frame triple_fattach.
   rewrite hstar_hempty_r'.
   intros h (MA&MB). splits.
-  rewrite hfstar_hpure. splits. apply noduplicates_one.
   apply MA. apply MB.
   intros r. rewrite hstar_hempty_r'.
   intros h M. exists~ bp1.
@@ -89,13 +71,13 @@ Before append, the file only has one block whose content is (n1,n2).
 After the operation, the file has two blocks, and its last block has content as (n3).
 *)
 Lemma triple_Append_blk_gen: forall (p1:bloc) (n1 n2 n3:int) (f:floc) ,
-  triple (Append_blk f (val_listint (n3::nil)))
+  triple (Append_a_blk f (val_listint (n3::nil)))
     (\R[ f ~f~> (p1::nil), p1 ~b~> (n1::n2::nil) ])
     (fun _ => \exists bp, \R[f ~f~> (p1::bp::nil), (p1 ~b~> (n1::n2::nil)) \b* (bp ~b~> (n3::nil))]).
 Proof.
   intros.
   applys triple_conseq_frame.
-  applys triple_Append_blk.
+  applys triple_Append_a_blk.
   rewrite hstar_sep, hfstar_hempty_r, hbstar_hempty_l.
   applys himpl_refl.
   intros r h H. rewrite hstar_hexists in H.
@@ -106,34 +88,34 @@ Proof.
 Qed.
 
 (*=================== Append contents =========================*)
-Definition Append : val :=
+Definition AppendBlks : val :=
   Fix 'F 'f 'l :=
     Let 'm := 'len 'l in
     Let 'be := ('m '<= 2) in
     If_ 'be
     Then 
-      Append_blk 'f 'l
+      Append_a_blk 'f 'l
     Else
-      Let 'l1 := 'hd 'l in
-      Let 'l2 := 'tl 'l in
-      Let 'r := Append_blk 'f 'l1 in
+      Let 'l1 := 'hdblk 'l in
+      Let 'l2 := 'tlblk 'l in
+      Let 'r := Append_a_blk 'f 'l1 in
         'F 'f 'l2.
 
-Lemma triple_Append: forall (p1:bloc) (n1 n2 n3 n4 n5:int) (f:floc) ,
-  triple (Append f (val_listint (n3::n4::n5::nil)))
-    (\R[ f ~f~> (p1::nil), p1 ~b~> (n1::n2::nil) ])
-    (fun _ => \exists bp2 bp3, 
-      \R[f ~f~> (p1::bp2::bp3::nil), 
-         (p1 ~b~> (n1::n2::nil)) \b* (bp2 ~b~> (n3::n4::nil)) \b* (bp3 ~b~> (n5::nil))]).
+Lemma triple_AppendBlks: forall (b1:bloc) (n1 n2 n3 n4 n5:int) (f:floc) ,
+  triple (AppendBlks f (val_listint (n3::n4::n5::nil)))
+    (\R[ f ~f~> (b1::nil), b1 ~b~> (n1::n2::nil) ])
+    (fun _ => \exists b2 b3, 
+      \R[f ~f~> (b1::b2::b3::nil), 
+         (b1 ~b~> (n1::n2::nil)) \b* (b2 ~b~> (n3::n4::nil)) \b* (b3 ~b~> (n5::nil))]).
 Proof.
   intros. applys* triple_app_fix2. simpl.
   applys triple_let triple_list_len.
   ext. applys triple_let triple_le. ext.
   applys triple_if. case_if*. destruct C. auto.
-  applys triple_let triple_list_hd. ext.
-  applys triple_let triple_list_tl. ext.
+  applys triple_let triple_list_hd_bk. ext.
+  applys triple_let triple_list_tl_bk. ext.
   applys triple_let.
-  applys triple_conseq_frame triple_Append_blk.
+  applys triple_conseq_frame triple_Append_a_blk.
   rewrite hstar_sep. rewrite hfstar_hempty_r, hbstar_hempty_l.
   apply himpl_refl. intros r. simpl.
   apply himpl_refl.
@@ -147,14 +129,55 @@ Proof.
   applys triple_let triple_le. ext.
   applys triple_if. case_if*.
   2: { destruct C0. rew_list. discriminate. }
-  applys triple_conseq_frame triple_Append_blk.
+  applys triple_conseq_frame triple_Append_a_blk.
   rewrite hstar_sep, hfstar_hempty_r, hbstar_hempty_l. apply himpl_refl.
   rewrite hstar_hexists. apply himpl_hexists_append.
 Qed.
 
 
+Definition AppendFile : val :=
+  Fun 'f 'l :=
+    Let 'm := 'fsize 'f in
+    Let 'm1 := 'm '- 1%nat in
+    Let 'b := 'nthblk 'f 'm1 in
+    Let 'm2 := 'bsize 'b in
+    Let 'be := ('m '<= 2%nat) in
+    If_ 'be
+    Then 
+      Let 'k := 'hd 'l in
+      Let 'l2 := 'tl 'l in
+      Let 'r := 'bapp 'b 'k in 
+        AppendBlks 'f 'l2
+    Else
+      AppendBlks 'f 'l.
 
+Fact le_1_2': (1%nat <= 2%nat) = True.
+Proof. apply prop_eq_True. discriminate. Qed.
 
+Lemma triple_AppendFile: forall (b1:bloc) (n1 n2 n3 n4 n5:int) (f:floc) ,
+  triple (AppendFile f (val_listint (n2::n3::n4::n5::nil)))
+    (\R[ f ~f~> (b1::nil), b1 ~b~> (n1::nil) ])
+    (fun _ => \exists b2 b3, 
+      \R[f ~f~> (b1::b2::b3::nil), 
+         (b1 ~b~> (n1::n2::nil)) \b* (b2 ~b~> (n3::n4::nil)) \b* (b3 ~b~> (n5::nil))]).
+
+Proof.
+  intros. applys* triple_app_fun2. simpls.
+  applys triple_let triple_fsize. ext.
+  applys triple_let triple_min. ext.
+  applys triple_let triple_fget_nth_blk. ext.
+  applys triple_let triple_bsize. ext.
+  applys triple_let triple_le. ext.
+  applys triple_if. rewrite le_1_2'. case_if*.
+  applys triple_let triple_list_hd. ext.
+  applys triple_let triple_list_tl. ext.
+  applys triple_let triple_bappend. ext. rew_list.
+  applys triple_conseq_frame triple_AppendBlks.
+  rewrite hstar_hempty_r', nth_default_zero. apply himpl_refl.
+  intros r. ext_blk. intros b2. ext_blk. intros b3.
+  rewrite hstar_hempty_r'. intros h M.
+  exists~ b2 b3.
+Qed.
 
 
 (*-------Some auto proof script for reasoning about truncate-------*)
@@ -163,9 +186,6 @@ Proof. math. Qed.
 
 Fact le_2_1: (2%nat <= 1%nat) = False.
 Proof. auto. Qed.
-
-Fact le_1_2': (1%nat <= 2%nat) = True.
-Proof. apply prop_eq_True. discriminate. Qed.
 
 Fact le_0_2: (0%nat <= 2%nat) = True.
 Proof. apply prop_eq_True. discriminate. Qed.
@@ -209,7 +229,7 @@ Definition Truncate : val :=
   Fix 'F 'f 'n :=
     Let 'm := 'fsize 'f in
     Let 'm1 := 'm '- 1%nat in
-    Let 'bk := 'nth_blk 'f 'm1 in
+    Let 'bk := 'nthblk 'f 'm1 in
     Let 'm2 := 'bsize 'bk in
     Let 'be := ('n '<= 'm2) in
     If_ 'be
@@ -242,7 +262,7 @@ Proof.
   applys triple_conseq_frame triple_bdelete.
   rewrite hstar_sep. applys himpl_refl.
   intros r. rewrite hstar_sep, hfstar_hempty_r, hbstar_hempty_l. applys himpl_refl.
-  intros. simpl. applys triple_let triple_ftruncate.
+  intros. simpl. applys triple_let triple_ftrun.
   intros. simpl. unfold droplast. simpl. rew_list.
   (* the second round *)
   run2time.

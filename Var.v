@@ -346,6 +346,11 @@ Notation "''ln1'" := ("ln1":var) : var_scope.
 Notation "''ln2'" := ("ln2":var) : var_scope.
 Notation "''ln3'" := ("ln3":var) : var_scope.
 Notation "''F'" := ("F":var) : var_scope.
+Notation "''L'" := ("L":var) : var_scope.
+Notation "''L1'" := ("L1":var) : var_scope.
+Notation "''L2'" := ("L2":var) : var_scope.
+Notation "''Lwd'" := ("Lwd":var) : var_scope.
+Notation "''lwd'" := ("lwd":var) : var_scope.
 
 Open Scope var_scope.
 

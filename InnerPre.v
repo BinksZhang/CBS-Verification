@@ -56,14 +56,14 @@ Notation "\f[]" := (hfempty)
 
 (* singleton *)
 
-Definition hbsingle (bp:bloc) (ll:list int) : hbprop :=
-  fun h => (h = Fmap.single bp ll /\ bp <> bnull).
+Definition hbsingle (b:bloc) (ln:list int) : hbprop :=
+  fun h => (h = Fmap.single b ln /\ b <> bnull).
 
-Definition hfsingle (fp:floc) (lb:list bloc) : hfprop :=
-  fun h => (h = Fmap.single fp lb /\ fp <> fnull).
+Definition hfsingle (f:floc) (lb:list bloc) : hfprop :=
+  fun h => (h = Fmap.single f lb /\ f <> fnull).
 
-Notation "bp '~b~>' ll" := (hbsingle bp ll) (at level 32) : hprop_scope.
-Notation "fp '~f~>' lb" := (hfsingle fp lb) (at level 32) : hprop_scope.
+Notation "b '~b~>' ln" := (hbsingle b ln) (at level 32) : hprop_scope.
+Notation "f '~f~>' lb" := (hfsingle f lb) (at level 32) : hprop_scope.
 
 (* sep star *)
 

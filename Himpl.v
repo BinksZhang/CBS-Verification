@@ -193,11 +193,7 @@ Lemma hstar_sep_l : forall Hf Hb Hf' Hb',
 ==>
   \R[(Hf \f* Hf'), (Hb \b* Hb')].
 Proof.
-  introv.
-  introv M.
-  destruct M as (h1&h2&HA&HB&(HC1&HC2)&HD).
-  destruct HA as (HA1&HA2).
-  destruct HB as (HB1&HB2).
+  introv. intros h (h1&h2&(HA1&HA2)&(HB1&HB2)&(HC1&HC2)&HD).
   subst. splits; simpl.
   applys~ hfstar_intro.
   applys~ hbstar_intro.
@@ -209,15 +205,11 @@ Lemma hstar_sep_r : forall Hf Hb Hf' Hb',
   (\R[ Hf, Hb ]) \* (\R[ Hf', Hb' ]).
 Proof.
   introv.
-  introv M.
-  destruct M as (HA&HB).
-  destruct HA as (sf1&sf2&HB1&HB2&HB3&HB4).
-  destruct HB as (sb1&sb2&HC1&HC2&HC3&HC4).
-  exists (sf1,sb1) (sf2,sb2). splits.
-  splits~. splits~. splits~.
+  intros h ((hf1&hf2&HB1&HB2&HB3&HB4)&(hb1&hb2&HC1&HC2&HC3&HC4)).
+  exists (hf1,hb1) (hf2,hb2).
+  splits; try splits~.
   unfold glounion. simpl.
-  rewrite <- HB4, <- HC4.
-  auto.
+  rewrite <- HB4, <- HC4. auto.
 Qed.
 
 Lemma hstar_sep: forall Hf Hb Hf' Hb',
@@ -226,9 +218,24 @@ Lemma hstar_sep: forall Hf Hb Hf' Hb',
   \R[(Hf \f* Hf'), (Hb \b* Hb')].
 Proof.
   intros. apply himpl_antisym.
+  - intros h (h1&h2&(HA1&HA2)&(HB1&HB2)&(HC1&HC2)&HD).
+    subst. splits; simpl.
+    applys~ hfstar_intro. applys~ hbstar_intro.
+  - intros h ((hf1&hf2&HB1&HB2&HB3&HB4)&(hb1&hb2&HC1&HC2&HC3&HC4)).
+    exists (hf1,hb1) (hf2,hb2). splits; try splits~.
+    unfold glounion. simpl.
+    rewrite <- HB4, <- HC4. auto.
+Qed.
+
+(* Lemma hstar_sep: forall Hf Hb Hf' Hb',
+  (\R[ Hf, Hb ]) \* (\R[ Hf', Hb' ])
+=
+  \R[(Hf \f* Hf'), (Hb \b* Hb')].
+Proof.
+  intros. apply himpl_antisym.
   apply hstar_sep_l.
   apply hstar_sep_r.
-Qed.
+Qed. *)
 
 Lemma hstar_intro : forall H1 H2 h1 h2,
   H1 h1 -> H2 h2 ->
@@ -798,3 +805,50 @@ Lemma himpl_qwand_r : forall (Q1 Q2:val->hprop) H,
   Q1 \*+ H ===> Q2 ->
   H ==> (Q1 \--* Q2).
 Proof. introv M. rewrite~ qwand_equiv. Qed.
+
+
+Lemma hstar_same_block : forall (f1 f2:floc) (b:bloc) (ln:list int),
+(\R[f1 ~f~> (b::nil), b ~b~> ln] \* 
+ \R[f2 ~f~> (b::nil), b ~b~> ln]) ==> \[False].
+Proof.
+  introv. rewrite hstar_sep. unfold hbsingle.
+  intros h (Hf&(hb1&hb2&(Hb1&Hb1')&(Hb2&Hb2')&D&E)). 
+  (* destruct Hb as (hb1&hb2&(Hb1&Hb1')&(Hb2&Hb2')&D&E). *)
+  subst. false. applys Fmap.disjoint_single_single_same_inv D.
+Qed.
+
+
+
+Lemma hprop_refine_eq: forall (H:hprop) h,
+exists Hf Hb,
+  H h -> \R[Hf,Hb] h.
+Proof.
+  intros H h. exists (=fst h) (= snd h). 
+  unfolds RefineAssn.
+  intros M.
+  rewrite prod2_eq_tuple_proj in M.
+  splits~.
+Qed.
+
+Lemma hprop_refine_eq': forall (Hf:hfprop) (Hb:hbprop) h,
+exists (H:hprop),
+  (\R[Hf,Hb]) h -> H h.
+Proof.
+  intros Hf Hb h. exists (\R[(=fst h),(= snd h)]).
+  intros (HF&HB). splits~.
+Qed.
+
+Lemma refine_eq': forall H,
+  H = (\exists hf hb, \[H (hf,hb)] \* (\R[(=hf),(=hb)])).
+Proof.
+  intros H. apply himpl_antisym.
+  intros h M. rewrite prod2_eq_tuple_proj in M.
+  exists (fst h) (snd h).
+  rewrite hstar_hpure_iff. splits~.
+  splits~.
+  intros h M.
+  destruct M as (hf&hb&M).
+  rewrite hstar_hpure_iff in M.
+  destruct M as (MA&(MB&MC)).
+  subst. rewrite prod2_eq_tuple_proj. apply MA.
+Qed.

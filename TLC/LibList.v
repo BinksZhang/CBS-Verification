@@ -36,11 +36,11 @@ Bind Scope liblist_scope with list.
 
 Infix "::" := cons (at level 60, right associativity) : liblist_scope.
 
-(* Not loaded by default
-Notation "[ ]" := nil (format "[ ]") : liblist_scope.
-Notation "[ x ]" := (cons x nil) : liblist_scope.
-Notation "[ x ; y ; .. ; z ]" :=  (cons x (cons y .. (cons z nil) ..)) : liblist_scope.
-*)
+
+(* Notation "{ }" := nil (format "{ }") : liblist_scope.
+Notation "{ x }" := (cons x nil) : liblist_scope.
+Notation "{ x ; y ; .. ; z }" :=  (cons x (cons y .. (cons z nil) ..)) : liblist_scope. *)
+
 
 (* ********************************************************************** *)
 (* ################################################################# *)
