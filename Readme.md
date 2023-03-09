@@ -38,7 +38,7 @@ Proof.
   applys* triple_let triple_fget_nth_blk. ext. (* get the block's loc *)
   applys triple_let triple_bget. ext.          (* get the block's contents *)
   applys triple_conseq_frame triple_bcreate.   (* create a new block *)
-  rewrite* hstar_hempty_l'.                  (* rewrite the format and complete proof *)
+  rewrite* hstar_hempty_l'.                    (* rewrite the format and complete proof *)
   introv M. rewrite hstar_hexists in M.
   destruct M as (b1&M).
   rewrite hstar_assoc, hstar_sep, hfstar_hempty_l in M.
