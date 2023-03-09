@@ -50,16 +50,16 @@ Qed.
 
 The Implementation of our proof system mainly consists the following parts:.
 
-- Modeling Language  ——  Language.v
-- Assertion Language  ——  CBS heap predicates (Himpl.v) + Internal heap predicates (InnerPre.v)
-- Hoare Logic  —— Hoare.v
-- The proof system for CBS —— TripleAndRules.v
-- Verification of basic operations  ——  ExBasic.v
-- Verification of data modifications ——  ExModification.v
-- Verification of a MapReduce application (WordCount) ——  ExMapReduce.v
-- Variable Notations —— Var.v 
+- Modeling Language  ——  [Language.v](https://github.com/BinksZhang/CBS-Verification/blob/main/Language.v)
+- Assertion Language  ——  CBS heap predicates ([Himpl.v](https://github.com/BinksZhang/CBS-Verification/blob/main/Himpl.v)) + Internal heap predicates ([InnerPre.v](https://github.com/BinksZhang/CBS-Verification/blob/main/InnerPre.v))
+- Hoare Logic  —— [Hoare.v](https://github.com/BinksZhang/CBS-Verification/blob/main/Hoare.v)
+- The proof system for CBS —— [TripleAndRules.v](https://github.com/BinksZhang/CBS-Verification/blob/main/TripleAndRules.v)
+- Verification of basic operations  ——  [ExBasic.v](https://github.com/BinksZhang/CBS-Verification/blob/main/ExBasic.v)
+- Verification of data modifications ——  [ExModification.v](https://github.com/BinksZhang/CBS-Verification/blob/main/ExModification.v)
+- Verification of a MapReduce application (WordCount) ——  [ExMapReduce.v](https://github.com/BinksZhang/CBS-Verification/blob/main/ExMapReduce.v)
+- Variable Notations —— [Var.v](https://github.com/BinksZhang/CBS-Verification/blob/main/Var.v)
 
-In additions, our tool depends on a Coq standard library (TLC.v) and a definition of finite map (Fmap.v).
+In additions, our tool depends on a Coq standard library (TLC) and a definition of finite map (Fmap.v).
 
 The implementation of the verification tool amount to 5664 non-blank lines of Coq script. It includes 115 definitions, 368 lemmas, and the verifications of 12 scenarios.
 
