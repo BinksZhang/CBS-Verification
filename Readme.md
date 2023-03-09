@@ -23,9 +23,9 @@ Second, specify the invocation of this function by a triple. This triple capture
 ```Coq
 Lemma triple_CopyBlk : forall (f:floc) (b:bloc) (lb:list bloc) (ln:list int) (n:int),
   triple (CopyBlk f n)  (* invocate the function *)
-(* pre-condition: the pure fact constrains the location; the predicate describes the storage of the target block *)
+(* pre-condition: constrains the location; describes the storage of the target block *)
     ( \[b = nth n lb] \* \R[f ~f~> lb, b ~b~> ln] )
-(* post-condition: the pure fact describes the new block's location; the predicate additionally declares that a new block has been created *) 
+(* post-condition: describes the new block's location; additionally declares that a new block has been created *) 
     ( fun r => \exists (b1:bloc), \[r=b1] \* (\R[f ~f~> lb,(b1 ~b~> ln) \b* (b ~b~> ln)]) ).
 ```
 
