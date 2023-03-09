@@ -83,7 +83,7 @@ To install the latest development version of our tool, use this:
   make
 ```
 
-**Note** : <font color=red>No Chinese is allowed in the file path!</font>
+**Note** : <font color=red>Only English or Number is allowed in the file path!!</font>
 
 ## Replaying a Sample Proof
 
