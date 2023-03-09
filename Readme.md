@@ -59,7 +59,7 @@ The Implementation of our proof system mainly consists the following parts:.
 - Verification of a MapReduce application (WordCount) ——  [ExMapReduce.v](https://github.com/BinksZhang/CBS-Verification/blob/main/ExMapReduce.v)
 - Variable Notations —— [Var.v](https://github.com/BinksZhang/CBS-Verification/blob/main/Var.v)
 
-In additions, our tool depends on a Coq standard library (TLC) and a definition of finite map (Fmap.v).
+In additions, our tool depends on a Coq standard library ([TLC](https://github.com/BinksZhang/CBS-Verification/tree/main/TLC)) and a definition of finite map ([Fmap.v](https://github.com/BinksZhang/CBS-Verification/blob/main/Fmap.v)).
 
 The implementation of the verification tool amount to 5664 non-blank lines of Coq script. It includes 115 definitions, 368 lemmas, and the verifications of 12 scenarios.
 
